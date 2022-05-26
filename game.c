@@ -175,7 +175,7 @@ void* secondkeypress(void *args)
   }
 }
 
-int initialization(int *args,char **argv)
+int initialization(int *args,char **argv) //кто спавнится где, если первый больше - он слева
 {
     page_size = sysconf(_SC_PAGESIZE);
       if ( 0 > (fb = open("/dev/fb0", O_RDWR))) 
@@ -201,7 +201,7 @@ int initialization(int *args,char **argv)
         endwin();
         exit(0);
      }
-      info.xres = args[0];
+      info.xres = args[0]; //размер поля, низя больше х,y
       info.yres = args[1];
       if( NULL == initscr()) {
           return __LINE__;
@@ -223,6 +223,7 @@ int initialization(int *args,char **argv)
         }
       }
 }
+//8 na 9
 void FRAME_print()
 {
   for(int a = 0;a<info.yres;a++)
@@ -574,15 +575,15 @@ void* init_bikes_and_cycle(void *args)
   first.name = 'B';
   second.name = 'R';
 
-  pthread_create(&line_key1,NULL, first_bike_press,NULL);
-  pthread_create(&line_key2,NULL, second_bike_press,NULL);
-  pthread_create(&line, NULL, firstkeypress, &first);
-  pthread_create(&line2, NULL, secondkeypress, &second);
+  pthread_create(&line_key1,NULL, first_bike_press,NULL);//чек нажатия
+  pthread_create(&line_key2,NULL, second_bike_press,NULL);//чек нажатия
+  pthread_create(&line, NULL, firstkeypress, &first);//ставит клавиши
+  pthread_create(&line2, NULL, secondkeypress, &second);//ставит клавиши
 
   while(working_flag)
   {
-    print(&first,&first.x,&first.y,second.color);
-    print(&second,&second.x,&second.y,first.color);
+    print(&first,&first.x,&first.y,second.color);//меняет корды и след кидает
+    print(&second,&second.x,&second.y,first.color);//меняет корды и след кидает
     i++;
     usleep(62500);
   }
@@ -605,22 +606,22 @@ void* init_bikes_and_cycle(void *args)
   second.x = info.xres - 10;
   second.y = info.yres - 30;
   second.color = 0x01009977;
-  second.side = 0;
-  second.key = '.';
+  second.side = 0; //текущее направление
+  second.key = '.';//предыдущ. перем.
   second.lose_flag = 0;
   way = first.side; 
   way2 = second.side;
   first.name = 'R';
   second.name = 'B';
   pthread_t line, line2, line_key1, line_key2;
-  pthread_create(&line_key1,NULL, first_bike_press,NULL);
+  pthread_create(&line_key1,NULL, first_bike_press,NULL);//опять приколы с нажатиями
   pthread_create(&line_key2,NULL, second_bike_press,NULL);
   pthread_create(&line, NULL, firstkeypress, &first);
   pthread_create(&line2, NULL, secondkeypress, &second);
 
   while(working_flag)
   {
-    print(&first,&first.x,&first.y,second.color);
+    print(&first,&first.x,&first.y,second.color);//опять корды
     print(&second,&second.x,&second.y,first.color);
     i++;
     usleep(62500);
