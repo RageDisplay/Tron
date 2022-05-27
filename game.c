@@ -59,7 +59,8 @@ int win(struct Bike *moto)
   {
   mvprintw(1,0, "%clue lost the game \nRed earned %d points",moto->name,i);
   }
-  else{
+  else
+  {
     mvprintw(1,0, "%ced lost the game \nBlue earned %d points",moto->name,i);
   }
   refresh();
@@ -92,7 +93,8 @@ void charget()
   }
 void handler()
 {
-  working_flag = 0; munmap(ptr, map_size);
+  working_flag = 0; 
+  munmap(ptr, map_size);
   close(fb);
   endwin();
   exit(0);
@@ -141,8 +143,7 @@ void* firstkeypress(void *args)
       default:
         break;
 
-      }
-    
+      }  
   }
 }
 void* secondkeypress(void *args)
@@ -203,14 +204,16 @@ int initialization(int *args,char **argv) //кто спавнится где, е
      }
       info.xres = args[0]; //размер поля, низя больше х,y
       info.yres = args[1];
-      if( NULL == initscr()) {
+      if( NULL == initscr()) 
+      {
           return __LINE__;
-        }
+      }
       noecho();
       curs_set(2);
       keypad(stdscr,TRUE);
       ptr = mmap(NULL, map_size, PROT_READ | PROT_WRITE, MAP_SHARED, fb, 0);
-      if (MAP_FAILED == ptr) {
+      if (MAP_FAILED == ptr) 
+      {
         perror("mmap");
         close(fb);
         return __LINE__;
@@ -218,7 +221,7 @@ int initialization(int *args,char **argv) //кто спавнится где, е
       for(int a = 0;a<=info.xres;a++)
       {
         for(int b = 0;b<=info.yres;b++)
-	{
+	      {
           ptr[b * info.xres_virtual + a]=0x00000000;
         }
       }
