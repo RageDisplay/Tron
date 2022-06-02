@@ -1,2 +1,0 @@
-MAIN 214 sum1	 204 sum2
-RIGht 214 sum1	 204 sum2

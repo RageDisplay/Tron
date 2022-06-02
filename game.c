@@ -59,6 +59,10 @@ int win(struct Bike *moto)
   {
   mvprintw(1,0, "%clue lost the game \nRed earned %d points",moto->name,i);
   }
+  else if (moto->name == 10)
+  {
+    mvprintw(1,1, "Draw");
+  }
   else
   {
     mvprintw(1,0, "%ced lost the game \nBlue earned %d points",moto->name,i);
@@ -641,18 +645,18 @@ int main(int argc, char *argv[])
 
   signal(SIGINT, handler);
   int args[2];
-  if(argc < 5)
+  if(argc < 4)
   {
     printf("Usage: %s Xres Yres Your_ip Enemy_ip\n",argv[0]);
     exit(0);
   }
   args[0] = atoi(argv[1]);
   args[1] = atoi(argv[2]);
-
  sscanf(argv[3],"%d.%d.%d.%d",&ar1[0],&ar1[1],&ar1[2],&ar1[3]);
- sscanf(argv[4],"%d.%d.%d.%d",&ar2[0],&ar2[1],&ar2[2],&ar2[3]);
+ //sscanf(argv[4],"%d.%d.%d.%d",&ar2[0],&ar2[1],&ar2[2],&ar2[3]);
  sum1 = ar1[0]+ar1[1]+ar1[2]+ar1[3];
- sum2 = ar2[0]+ar2[1]+ar2[2]+ar2[3];
+ sum2 = 128; 
+//sum2 = ar2[0]+ar2[1]+ar2[2]+ar2[3];
  f = fopen("ORRO.txt","w");
  fprintf(f,"MAIN %d sum1\t %d sum2\n",sum1,sum2);
 
@@ -675,7 +679,8 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
     me.sin_family = AF_INET;
-    me.sin_addr.s_addr = inet_addr((argv[3]));
+    //me.sin_addr.s_addr = htonl(inet_addr("0.0.0.0"));
+    me.sin_addr.s_addr = htonl(INADDR_ANY);
     me.sin_port = htons(12345);
     if ( bind(my_fd, (const struct sockaddr*)&me,sizeof(me)) < 0 )
     {
@@ -692,7 +697,7 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
     other.sin_family = AF_INET;
-    other.sin_addr.s_addr = inet_addr((argv[4]));
+    other.sin_addr.s_addr = inet_addr((argv[3]));
     other.sin_port = htons(12345);
 
   pthread_t line_cycle;
